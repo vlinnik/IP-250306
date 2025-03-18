@@ -1,11 +1,11 @@
 [Desktop Entry]
-Exec=ip-250306
+Exec=pysca-hmi
 Name=IP-250306
 Type=Application
-Icon=etalon-250306
+Icon=ip-250306
 Version=1.0
 Terminal=false
 Comment=АСУ БСУ IP-250306
-Path=/usr/share/ip_250306
+Path=/usr/share/pysca-hmi
 StartupNotify=true
 
