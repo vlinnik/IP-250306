@@ -1,0 +1,11 @@
+__pycache__
+*.rcc
+.pybuild
+build
+.debhelper
+python3-*
+debhelper-build-stamp
+dist
+*.egg-info
+persist.dat
+persist.json

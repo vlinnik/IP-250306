@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=42", "wheel","setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+write_to = "gui/_version.py"
+
+
+[project]
+name = "ip_250306"
+dynamic=["version"]
+description = "Визуализация IP-250306"
+readme = "README.md"
+requires-python = ">=3.6"
+license = {text = "MIT License"}
+authors = [
+    {name = "Vasiliy Linnik", email = "vlinnik@mail.ru"}
+]
+urls = { "Homepage" = "https://github.com/vlinnik/etalon_241218.git" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies=["PythonQwt","AnyQt","sqlalchemy"]
+
+[project.optional-dependencies]
+dev = []
+
+[project.gui-scripts]
+ip-250306 = "gui.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["src"]
+include = ["gui"]
+
+[tool.setuptools.data-files]
+"share/applications" = ["ip-250306.desktop"]
+"share/ip_250306" = ["concrete6.dat", "default.scada", "SCADA.rcc","concrete.rcc"]
+"share/ip_250306/ui" = ["ui/Home.ui", "ui/Extensions.ui"]
+"share/ip_250306/modules" = ["/usr/lib/x86_64-linux-gnu/qt5/plugins/SCADA/modules/libconcrete6.so"]

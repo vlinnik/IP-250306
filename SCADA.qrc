@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/SCADA">
+    <file alias="SCADA.ini">SCADA.ini</file>
+  </qresource>
+</RCC>
