@@ -50,7 +50,7 @@ manager_1 = Manager(collected=ready_1,loaded=loaded_1,mixer=mixer_1,dosators=[dc
 
 instances = [ factory_1,gate_1,motor_1,mixer_1,cement_m_1,silage_1,dcement_1,water_m_1,water_1,dwater_1, fillers_m_1,filler_1,filler_2,dfillers_1,elevator_1,ready_1,loaded_1,manager_1,addition_1 ]
 
-if sys.platform=='linux' or True:
+if sys.platform=='linux':
   if sys.platform=='linux':
     import argparse
     from pyplc.config import exports
