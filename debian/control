@@ -12,11 +12,13 @@ Standards-Version: 4.6.2
 Homepage: https://github.com/vlinnik/ip-250306.git
 
 Package: python3-ip-250306
-Architecture: all
+Architecture: amd64
 Multi-Arch: foreign
 Depends:
  ${python3:Depends},
  ${misc:Depends},
+ ${shlibs:Depends},
+ qt5-image-formats-plugins
 Suggests:
 Description: Concrete Factory Automation HMI (Python 3)
  Project based on PYSCA-Framework

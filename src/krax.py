@@ -3,6 +3,7 @@ from project import name as project_name, version_short as project_version
 from concrete import Factory,Weight,Container,Lock,Dosator,Mixer,MSGate,Motor,Manager,Readiness,Loaded,FlowMeter
 from concrete.elevator import ElevatorGeneric
 from concrete.imitation import iMOTOR,iGATE,iWEIGHT,iVALVE,iELEVATOR,iROTARYFLOW
+from pyplc.utils.misc import BLINK
 import sys
 
 print('\tStarting PLC for project %s version %s' % (project_name, project_version))
@@ -12,6 +13,8 @@ factory_1 = Factory()
 cement_m_1 = Weight(raw = plc.CEMENT_M_1, mmax = 1500)
 silage_1 = Container( m = lambda: cement_m_1.m, out = plc.AUGER_ON_1, lock = Lock(key=~plc.DCEMENT_CLOSED_1) )
 dcement_1 = Dosator( m = lambda: cement_m_1.m, closed = plc.DCEMENT_CLOSED_1, out = plc.DCEMENT_OPEN_1, lock = Lock(key=lambda: plc.AUGER_ON_1 or not plc.MIXER_ISON_1 ),containers=[silage_1] )
+
+aerator_1 = BLINK(enable=plc.AUGER_ON_1, q = plc.AERATOR_ON_1, t_off = 3000 )
 
 water_m_1 = Weight(raw = plc.WATER_M_1, mmax = 500)
 water_1 = Container( m = lambda: water_m_1.m, out = plc.WPUMP_ON_1, lock = Lock(key=~plc.DWATER_CLOSED_1) )
@@ -48,7 +51,7 @@ ready_1 = Readiness([dcement_1,dwater_1,elevator_1]) #что должно быт
 loaded_1 = Loaded([dcement_1,dwater_1,elevator_1,addition_1])  #что должно быть unloaded чтобы смеситель считать загруженным
 manager_1 = Manager(collected=ready_1,loaded=loaded_1,mixer=mixer_1,dosators=[dcement_1,dwater_1,dfillers_1,elevator_1],loadOrder= loadOrder_1)  #dosators= кому надо установить unload для начала загрузки
 
-instances = [ factory_1,gate_1,motor_1,mixer_1,cement_m_1,silage_1,dcement_1,water_m_1,water_1,dwater_1, fillers_m_1,filler_1,filler_2,dfillers_1,elevator_1,ready_1,loaded_1,manager_1,addition_1 ]
+instances = [ factory_1,gate_1,motor_1,mixer_1,cement_m_1,silage_1,dcement_1,water_m_1,water_1,dwater_1, fillers_m_1,filler_1,filler_2,dfillers_1,elevator_1,ready_1,loaded_1,manager_1,addition_1,aerator_1 ]
 
 if sys.platform=='linux':
   if sys.platform=='linux':
