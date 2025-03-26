@@ -8,7 +8,7 @@
     "upydev": "/home/vlinnik/.local/bin/upydev",
     "serial": "/home/vlinnik/.local/bin/mpremote"
   },
-  "target": "127.0.0.1",
-  "is_serial": false,
+  "target": "/dev/ttyUSB0",
+  "is_serial": true,
   "project": "PYPLC-250306"
 }
