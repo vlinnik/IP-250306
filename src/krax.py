@@ -21,7 +21,7 @@ water_m_1 = Weight(raw = plc.WATER_M_1, mmax = 500)
 water_1 = Container( m = lambda: water_m_1.m, out = plc.WPUMP_ON_1, lock = Lock(key=~plc.DWATER_CLOSED_1) )
 dwater_1 = Dosator( m = lambda: water_m_1.m, closed = plc.DWATER_CLOSED_1, out = plc.DWATER_OPEN_1, lock = Lock(key=lambda: plc.WPUMP_ON_1 or not plc.MIXER_ISON_1 ),containers=[water_1] )
 
-addition_1 = FlowMeter(out=plc.APUMP_ON_1,cnt=plc.ADDITION_Q_1,impulseWeight=0.01,closed=True)
+addition_1 = FlowMeter(out=plc.APUMP_ON_1,cnt=plc.ADDITION_Q_1,impulseWeight=0.001,closed=True)
 
 fillers_m_1 = Weight(raw=plc.CONVEYOR_M_1, mmax = 8000)
 filler_1 = Container(m = lambda: fillers_m_1.m, out=plc.FILLER_OPEN_1, lock = Lock(key=lambda: plc.FILLER_OPEN_2 or plc.CONVEYOR_ON_1 ))
@@ -37,9 +37,6 @@ mixer_1 = Mixer( gate=gate_1, motor = motor_1,flows=[ x.q for x in [silage_1,wat
 
 addition_1.install_counter( lambda: mixer_1.qreset )
 
-factory_1.on_mode = [ x.switch_mode for x in [silage_1,water_1,filler_1,filler_2,dcement_1,dwater_1,dfillers_1,addition_1] ]
-factory_1.on_emergency = [x.emergency for x in [silage_1,water_1,filler_1,filler_2,dcement_1,dwater_1,dfillers_1,mixer_1,elevator_1,addition_1] ]
-
 def loadOrder_1():
   elevator_1.unload = True
   while not elevator_1.unloaded and not elevator_1.above: yield 
@@ -52,6 +49,9 @@ def loadOrder_1():
 ready_1 = Readiness([dcement_1,dwater_1,elevator_1]) #что должно быть loaded перед началом загрузки в смеситель
 loaded_1 = Loaded([dcement_1,dwater_1,elevator_1,addition_1])  #что должно быть unloaded чтобы смеситель считать загруженным
 manager_1 = Manager(collected=ready_1,loaded=loaded_1,mixer=mixer_1,dosators=[dcement_1,dwater_1,dfillers_1,elevator_1],loadOrder= loadOrder_1)  #dosators= кому надо установить unload для начала загрузки
+
+factory_1.on_mode = [ x.switch_mode for x in [silage_1,water_1,filler_1,filler_2,dcement_1,dwater_1,dfillers_1,addition_1] ]
+factory_1.on_emergency = [x.emergency for x in [silage_1,water_1,filler_1,filler_2,dcement_1,dwater_1,dfillers_1,mixer_1,elevator_1,addition_1,manager_1] ]
 
 instances = [ factory_1,gate_1,motor_1,mixer_1,cement_m_1,silage_1,dcement_1,water_m_1,water_1,dwater_1, fillers_m_1,filler_1,filler_2,dfillers_1,elevator_1,ready_1,loaded_1,manager_1,addition_1,aerator_1,vibrator_1,vibrator_2,dc_vibrator_1 ]
 
