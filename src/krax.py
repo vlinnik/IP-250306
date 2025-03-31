@@ -21,7 +21,7 @@ water_m_1 = Weight(raw = plc.WATER_M_1, mmax = 500)
 water_1 = Container( m = lambda: water_m_1.m, out = plc.WPUMP_ON_1, lock = Lock(key=~plc.DWATER_CLOSED_1) )
 dwater_1 = Dosator( m = lambda: water_m_1.m, closed = plc.DWATER_CLOSED_1, out = plc.DWATER_OPEN_1, lock = Lock(key=lambda: plc.WPUMP_ON_1 or not plc.MIXER_ISON_1 ),containers=[water_1] )
 
-addition_1 = FlowMeter(out=plc.APUMP_ON_1,cnt=plc.ADDITION_Q_1,impulseWeight=0.001,closed=True)
+addition_1 = FlowMeter(out=plc.APUMP_ON_1,cnt=plc.ADDITION_Q_1,impulseWeight=0.0035,closed=True)
 
 fillers_m_1 = Weight(raw=plc.CONVEYOR_M_1, mmax = 8000)
 filler_1 = Container(m = lambda: fillers_m_1.m, out=plc.FILLER_OPEN_1, lock = Lock(key=lambda: plc.FILLER_OPEN_2 or plc.CONVEYOR_ON_1 ))
